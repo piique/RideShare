@@ -14,9 +14,9 @@ namespace RideShare.Data
         private DataStore<T> dataStore = new DataStore<T>();
 
 
-        private string path = Path.Combine(Environment.CurrentDirectory, $@"..\..\..\Data\{typeof(T).Name}.json");
+        private string path = Path.Combine(Environment.CurrentDirectory, $@"Data\{typeof(T).Name}.json");
 
-        public DataConnection() 
+        public DataConnection()
         {
             if (File.Exists(path))
             {
@@ -34,7 +34,7 @@ namespace RideShare.Data
             }
         }
 
-        public bool AddNewItem(T item)
+        public int AddNewItem(T item)
         {
             try
             {
@@ -44,13 +44,64 @@ namespace RideShare.Data
                 dataStore.Items.Add(item);
                 SaveDataStoreToFile();
 
-                return true;
+                return item.Id;
             }
             catch (Exception e)
             {
                 Console.WriteLine($"ERROR: {e.Message}");
-                return false;
+                return -1;
             }
+        }
+
+        public T? RemoveItem(int itemId)
+        {
+            try
+            {
+                var item = dataStore.Items.FirstOrDefault(i => i.Id == itemId);
+                if (item != null)
+                {
+                    dataStore.Items.Remove(item);
+                    SaveDataStoreToFile();
+                    return item;
+                }
+                else
+                {
+                    return default;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"ERROR: {e.Message}");
+                return default;
+            }
+        }
+
+        public T? UpdateItem(T item)
+        {
+            try
+            {
+                int index = dataStore.Items.FindIndex(i => i.Id == item.Id);
+                if (index != -1)
+                {
+                    dataStore.Items[index] = item;
+                    SaveDataStoreToFile();
+                    return item;
+                }
+                else
+                {
+                    return default;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"ERROR: {e.Message}");
+                return default;
+            }
+        }
+
+        public List<T> GetAllItems()
+        {
+            return dataStore.Items;
         }
 
         private void SaveDataStoreToFile()

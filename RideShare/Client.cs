@@ -12,8 +12,20 @@ namespace RideShare
         public int Id { get; set; }
         public string Name { get; set; }
 
-        public Client (string Name)
+
+        public Client()
         {
+            this.Name = "";
+        }
+
+        public Client(string Name)
+        {
+            this.Name = Name;
+        }
+
+        public Client(int Id, string Name)
+        {
+            this.Id = Id;
             this.Name = Name;
         }
 
