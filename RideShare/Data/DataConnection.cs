@@ -34,6 +34,19 @@ namespace RideShare.Data
             }
         }
 
+        public T? GetItemById(int id)
+        {
+            try
+            {
+                return dataStore.Items.FirstOrDefault(i => i.Id == id);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"ERROR: {e.Message}");
+                return default;
+            }
+        }
+
         public int AddNewItem(T item)
         {
             try

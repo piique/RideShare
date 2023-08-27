@@ -13,7 +13,8 @@ namespace RideShare.Data
 
         public List<T> Items { get; set; } = new List<T>();
 
-        public DataStore() { 
+        public DataStore()
+        {
             LastInsertedId = 0;
             TotalItems = 0;
             Items = new List<T>();
